@@ -6,10 +6,8 @@ from app.core.constants import MARKDOWN_BASE_DIR
 os.makedirs(MARKDOWN_BASE_DIR, exist_ok=True)
 router = APIRouter()
 
-
 def get_markdown_file_path(filename: str) -> str:
     return os.path.join(MARKDOWN_BASE_DIR, filename + '.md')
-
 
 @router.get("/{filename}", response_model=MarkdownResponse)
 def get_markdown(filename: str):
@@ -25,7 +23,6 @@ def get_markdown(filename: str):
             content=content
         )
 
- 
 @router.post("/{filename}")
 def create_markdown(filename: str, content: MarkdownContent):
     file_path = get_markdown_file_path(filename)
@@ -38,7 +35,6 @@ def create_markdown(filename: str, content: MarkdownContent):
 
     return {"message": "File created successfully"}
     
-
 @router.put("/{filename}")
 def update_markdown(filename: str, content: MarkdownContent):
     file_path = get_markdown_file_path(filename)
@@ -50,7 +46,6 @@ def update_markdown(filename: str, content: MarkdownContent):
         file.write(content.text)
 
     return {"message": "File updated successfully"}
-
 
 @router.delete("/{filename}")
 def delete_markdown(filename: str):
