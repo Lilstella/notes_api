@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 def get_markdown_file_path(filename: str) -> str:
-    return os.path.join(MARKDOWN_BASE_DIR, filename)
+    return os.path.join(MARKDOWN_BASE_DIR, filename + '.md')
 
 
 @router.get("/{filename}", response_model=MarkdownResponse)
