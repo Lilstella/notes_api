@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routes import auth, markdown, render, images
+from app.routes import markdown, render, images
 
 app = FastAPI(
     title="Markdown Editor API",
