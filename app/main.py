@@ -8,7 +8,6 @@ app = FastAPI(
 )
 
 # Routers
-app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(markdown.router, prefix="/markdown", tags=["Markdown"])
 app.include_router(render.router, prefix="/render", tags=["Render"])
 app.include_router(images.router, prefix="/images", tags=["Imágenes"])
