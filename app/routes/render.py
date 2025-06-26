@@ -4,7 +4,7 @@ from app.models.schemas import MarkdownContent
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("/html")
 def render_html(content: MarkdownContent):
     html_content = md(content.text)
     return {"html": html_content}
