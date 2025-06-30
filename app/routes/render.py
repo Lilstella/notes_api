@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.core.render import markdown_to_html
+from app.core.rendering import markdown_to_html
 from app.models.schemas import MarkdownContent
 
 router = APIRouter()

@@ -2,7 +2,7 @@ import os
 from fastapi import APIRouter, HTTPException
 from app.models.schemas import MarkdownContent, MarkdownResponse
 from app.core.constants import MARKDOWN_BASE_DIR
-from app.core.versioning import save_version, list_versions
+from app.core.versioning import save_version, list_versions, read_version, delete_versions
 
 os.makedirs(MARKDOWN_BASE_DIR, exist_ok=True)
 router = APIRouter()
@@ -60,8 +60,9 @@ def delete_markdown(filename: str):
 
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")
-
+        
     os.remove(file_path)
+    delete_versions(filename)
 
     return {"message": "File deleted successfully"}
 

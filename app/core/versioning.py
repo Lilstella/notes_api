@@ -5,7 +5,6 @@ from app.core.constants import VERSION_BASE_DIR
 os.makedirs(VERSION_BASE_DIR, exist_ok=True)
 
 def save_version(filename: str, content: str):
-    name = filename + ".md" if not filename.endswith(".md") else filename
     date = dt.now().strftime("%Y%m%d_%H%M%s")
     
     version_directory = os.path.join(VERSION_BASE_DIR, filename)
@@ -22,6 +21,7 @@ def list_versions(filename: str):
     directory = os.path.join(VERSION_BASE_DIR, filename)
     if not os.path.exists(directory):
         return []
+    return sorted(os.listdir(directory))
 
 def read_version(filename: str, version: str):
     version_path = os.path.join(VERSION_BASE_DIR, filename, version)
@@ -29,3 +29,10 @@ def read_version(filename: str, version: str):
         raise FileNotFoundError(f"Version {version} not found for file {filename}")
     with open(version_path, "r", encoding="utf-8") as file:
         return file.read()
+
+def delete_versions(filename: str):
+    directory = os.path.join(VERSION_BASE_DIR, filename)
+    if os.path.exists(directory):
+        for file in os.listdir(directory):
+            os.remove(os.path.join(directory, file))
+        os.rmdir(directory)
