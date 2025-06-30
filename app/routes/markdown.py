@@ -1,6 +1,6 @@
 import os
 from fastapi import APIRouter, HTTPException
-from app.models.schemas import MarkdownContent, MarkdownResponse
+from app.schemas import MarkdownContent, MarkdownResponse
 from app.core.constants import MARKDOWN_BASE_DIR
 from app.core.versioning import save_version, list_versions, read_version, delete_versions
 
