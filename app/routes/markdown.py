@@ -2,6 +2,7 @@ import os
 from fastapi import APIRouter, HTTPException
 from app.models.schemas import MarkdownContent, MarkdownResponse
 from app.core.constants import MARKDOWN_BASE_DIR
+from app.core.versioning import save_version, list_versions
 
 os.makedirs(MARKDOWN_BASE_DIR, exist_ok=True)
 router = APIRouter()
@@ -37,6 +38,12 @@ def create_markdown(filename: str, content: MarkdownContent):
     
 @router.put("/{filename}")
 def update_markdown(filename: str, content: MarkdownContent):
+    try:
+        current = get_markdown(filename)
+        save_version(filename, current.content)
+    except FileNotFoundError:
+        pass
+    
     file_path = get_markdown_file_path(filename)
 
     if not os.path.exists(file_path):
@@ -57,3 +64,16 @@ def delete_markdown(filename: str):
     os.remove(file_path)
 
     return {"message": "File deleted successfully"}
+
+@router.get("/{filename}/versions")
+def get_markdown_versions(filename: str):
+    versions = list_versions(filename)
+    return {"filename": filename, "versions": versions}
+
+@router.get("/{filename}/versions/{version}")
+def get_markdown_version(filename: str, version: str):
+    try:
+        content = read_version(filename, version)
+        return {"filename": filename, "version": version, "content": content}
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Version not found")
