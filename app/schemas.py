@@ -6,3 +6,10 @@ class MarkdownContent(BaseModel):
 class MarkdownResponse(BaseModel):
     filename: str
     content: str
+
+class CsvContent(BaseModel):
+    text: str
+
+class CsvResponse(BaseModel):
+    filename: str
+    content: str

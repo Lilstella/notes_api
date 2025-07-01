@@ -72,3 +72,16 @@ def markdown_to_html(markdown_text: str):
         html.append("</ul>")
 
     return "\n".join(html)
+
+def csv_to_markdown(csv_content: str):
+    lines = csv_content.splitlines()
+    headers = lines[0].split(",")
+
+    markdown = "| " + " | ".join(headers) + " |\n"
+    markdown += "| " + " | ".join(["---"] * len(headers)) + " |\n"
+
+    for line in lines[1:]:
+        columns = line.split(",")
+        markdown += "| " + " | ".join(columns) + " |\n" 
+
+    return markdown
