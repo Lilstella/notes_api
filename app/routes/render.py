@@ -1,13 +1,23 @@
-from fastapi import APIRouter
+import os
+from fastapi import APIRouter, HTTPException
 from app.core.rendering import markdown_to_html, csv_to_markdown
-from app.schemas import MarkdownContent, CsvContent
+from app.schemas import HtmlResponse, CsvContent
 
 router = APIRouter()
 
-@router.post("/html")
-def render_html(content: MarkdownContent):
-    html_content = markdown_to_html(content.text)
-    return {"html": html_content}
+@router.get("/html/{file_name}", response_model=HtmlResponse)
+def render_html(file_name: str):
+    file_path = f"markdown_storage/{file_name}.md"
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+        
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+        html_content = markdown_to_html(content)
+        return HtmlResponse(
+            filename=file_name,
+            content=html_content,
+        )
 
 @router.post("/csv")
 def render_csv(content: CsvContent):

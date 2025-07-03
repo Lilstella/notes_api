@@ -13,3 +13,7 @@ class CsvContent(BaseModel):
 class CsvResponse(BaseModel):
     filename: str
     content: str
+
+class HtmlResponse(BaseModel):
+    filename: str
+    content: str
