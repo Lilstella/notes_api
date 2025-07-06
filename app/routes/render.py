@@ -7,7 +7,7 @@ router = APIRouter()
 
 @router.get("/html/{file_name}", response_model=HtmlResponse)
 def render_html(file_name: str):
-    file_path = f"markdown_storage/{file_name}.md"
+    file_path = f"storage/{file_name}.md"
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")
         
