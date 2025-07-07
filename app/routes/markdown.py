@@ -1,14 +1,14 @@
 import os
 from fastapi import APIRouter, HTTPException
 from app.schemas import MarkdownContent, MarkdownResponse
-from app.core.constants import BASE_DIR
+from app.constants import MARKDOWN_BASE_DIR
 from app.core.versioning import save_version, list_versions, read_version, delete_versions
 
-os.makedirs(BASE_DIR, exist_ok=True)
+os.makedirs(MARKDOWN_BASE_DIR, exist_ok=True)
 router = APIRouter()
 
 def get_markdown_file_path(filename: str) -> str:
-    return os.path.join(BASE_DIR, filename + '.md')
+    return os.path.join(MARKDOWN_BASE_DIR, filename + '.md')
 
 @router.get("/{filename}", response_model=MarkdownResponse)
 def get_markdown(filename: str):

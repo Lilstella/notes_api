@@ -1,6 +1,6 @@
 import os
 from datetime import datetime as dt
-from app.core.constants import VERSION_BASE_DIR
+from app.constants import VERSION_BASE_DIR
 
 os.makedirs(VERSION_BASE_DIR, exist_ok=True)
 
