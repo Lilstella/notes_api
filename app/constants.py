@@ -7,5 +7,4 @@ CSV_BASE_DIR = os.path.join(BASE_DIR, "csv")
 VERSION_BASE_DIR = os.path.join(MARKDOWN_BASE_DIR, "versions")
 
 # Files
-VALID_EXTENSIONS = [".md", ".csv"]
-MARKDOWN = ".md"
+BASE_FOR_EXTENSION = {".md": MARKDOWN_BASE_DIR, ".csv": CSV_BASE_DIR}
