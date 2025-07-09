@@ -1,5 +1,8 @@
 from pydantic import BaseModel
 
+class ImportFileRequest(BaseModel):
+    file_path: str
+
 class MarkdownContent(BaseModel):
     text: str
 
