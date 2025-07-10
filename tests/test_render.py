@@ -1,14 +1,15 @@
+import os
 from fastapi.testclient import TestClient
 from app.main import app
 
 client = TestClient(app)
 
 def test_render_html():
-    filename = "test_render_html"
+    file_name = "test_render_html"
     content = {"text": "# Hi\n\nThis a **bold**, *italic* and ~~crossed~~ out text\n\n`code in line also`\n\n## Lista items\n\n- Item\n\n> This is a quote\n\n---\n\n"}
     
-    client.post(f"/markdown/{filename}", json=content)
-    response = client.get(f"/render/html/{filename}")
+    client.post(f"/markdown/{file_name}", json=content)
+    response = client.get(f"/render/html/{file_name}")
 
     assert response.status_code == 200
     html = response.json()["content"]
@@ -21,12 +22,20 @@ def test_render_html():
     assert "<blockquote>This is a quote</blockquote>" in html
     assert "<hr />" in html
 
-    client.delete(f"/markdown/{filename}")
+    client.delete(f"/markdown/{file_name}")
 
 def test_render_csv():
-    csv_text = "name,age,country\nLouis,43,Ven\nAlbert,80,Arg"   
-    response = client.post("/render/csv", json={"text": csv_text})
+    file_path = "tests/test_render.csv"
+    csv_text = "name,age,country\nLouis,43,Ven\nAlbert,80,Arg"
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.write(csv_text)
+    
+    client.post("/import", json={"file_path": file_path})
+    response = client.post("/render/csv/test_render")
     
     assert response.status_code == 200
-    markdown = response.json()["markdown"]
+    markdown = response.json()["content"]
     assert markdown == "| name | age | country |\n| --- | --- | --- |\n| Louis | 43 | Ven |\n| Albert | 80 | Arg |\n"
+
+    os.remove(file_path)
+    os.remove("storage/csv/test_render.csv")

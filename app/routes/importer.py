@@ -30,6 +30,6 @@ def import_file(request: ImportFileRequest):
 
     return {
         "message": "File imported successfully", 
-            "destination_path": destination_path,
-            "file_name": file_name
+        "destination_path": destination_path,
+        "file_name": file_name
     }

@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 
 class ImportFileRequest(BaseModel):
-    file_path: str
+    file_path: constr(min_length=1)
 
 class MarkdownContent(BaseModel):
     text: str

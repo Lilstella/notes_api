@@ -6,7 +6,7 @@ from app.main import app
 client = TestClient(app)
 
 def test_crud_markdown():
-    filename = "testfile"
+    filename = "testfile_crud"
     content = {"text": "Hi **world**"}
 
     # Create file
