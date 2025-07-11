@@ -13,7 +13,9 @@ def test_import_markdown():
     response = client.post("/import", json={"file_path": file_path})
     assert response.status_code == 200
     assert "imported" in response.json()["message"]
-    assert response.json()["destination_path"] == "storage/markdown/test.md"
+
+    expected_path = os.path.join("storage", "markdown", "test.md")
+    assert response.json()["destination_path"] == expected_path
     assert response.json()["file_name"] == "test.md"
     assert os.path.exists(file_path)
 

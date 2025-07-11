@@ -5,7 +5,7 @@ from app.constants import VERSION_BASE_DIR
 os.makedirs(VERSION_BASE_DIR, exist_ok=True)
 
 def save_version(filename: str, content: str):
-    date = dt.now().strftime("%Y%m%d_%H%M%s")
+    date = dt.now().strftime("%Y%m%d_%H%M%S")
     
     version_directory = os.path.join(VERSION_BASE_DIR, filename)
     os.makedirs(version_directory, exist_ok=True)
