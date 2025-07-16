@@ -1,6 +1,7 @@
 import re
 
-def markdown_to_html(markdown_text: str):
+
+def markdown_to_html(markdown_text: str) -> str:
     html = []
     in_list = False
     in_code = False
@@ -21,7 +22,7 @@ def markdown_to_html(markdown_text: str):
         if in_code:
             html.append(line)
             continue
-        
+
         # Header
         is_header = re.match(r"^(#{1,6})(.*)", line)
         if is_header:
@@ -73,7 +74,8 @@ def markdown_to_html(markdown_text: str):
 
     return "\n".join(html)
 
-def csv_to_markdown(csv_content: str):
+
+def csv_to_markdown(csv_content: str) -> str:
     lines = csv_content.splitlines()
     headers = lines[0].split(",")
 
@@ -82,6 +84,6 @@ def csv_to_markdown(csv_content: str):
 
     for line in lines[1:]:
         columns = line.split(",")
-        markdown += "| " + " | ".join(columns) + " |\n" 
+        markdown += "| " + " | ".join(columns) + " |\n"
 
     return markdown

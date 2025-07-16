@@ -2,9 +2,7 @@ from fastapi import FastAPI
 from app.routes import markdown, render, images, importer
 
 app = FastAPI(
-    title="Markdown Editor API",
-    description="API for manage MArkdowns",
-    version="1.0.0"
+    title="Markdown Editor API", description="API for manage MArkdowns", version="1.0.0"
 )
 
 # Routers

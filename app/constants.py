@@ -11,5 +11,5 @@ VERSION_BASE_DIR = os.path.join(MARKDOWN_BASE_DIR, "versions")
 BASE_FOR_EXTENSION = {
     ".md": MARKDOWN_BASE_DIR,
     ".csv": CSV_BASE_DIR,
-    ".txt": TXT_BASE_DIR
-    }
+    ".txt": TXT_BASE_DIR,
+}

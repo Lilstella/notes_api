@@ -8,8 +8,9 @@ router = APIRouter()
 
 os.makedirs(BASE_DIR, exist_ok=True)
 
+
 @router.post("/")
-def import_file(request: ImportFileRequest):
+def import_file(request: ImportFileRequest) -> dict[str, str]:
     if not os.path.exists(request.file_path):
         raise HTTPException(status_code=404, detail="File not found")
 
@@ -21,15 +22,15 @@ def import_file(request: ImportFileRequest):
 
     base_dir = BASE_FOR_EXTENSION[extension]
     os.makedirs(base_dir, exist_ok=True)
-    
+
     destination_path = os.path.join(base_dir, file_name)
     if os.path.exists(destination_path):
         raise HTTPException(status_code=409, detail="File already exists")
-        
+
     shutil.copy(request.file_path, destination_path)
 
     return {
-        "message": "File imported successfully", 
+        "message": "File imported successfully",
         "destination_path": destination_path,
-        "file_name": file_name
+        "file_name": file_name,
     }

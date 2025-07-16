@@ -58,6 +58,7 @@ def test_versioning():
 
     # Verify amount versions
     response = client.get(f"/markdown/{filename}/versions")
+    print(response.json())
     assert response.status_code == 200
     versions = response.json()["versions"]
     assert len(versions) == 2
