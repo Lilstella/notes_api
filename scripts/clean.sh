@@ -13,6 +13,7 @@ echo "🎈 Cleaning tempory files..."
 if [[ $mode == "tempory_and_storage" ]]; then
     rm -rf .pytest_cache
     rm -rf **/__pycache__
+    rm -rf .mypy_cache
     rm -rf tmp/
     rm -rf storage/
 
@@ -22,6 +23,7 @@ if [[ $mode == "tempory_and_storage" ]]; then
 elif [[ $mode == "tempory" ]]; then
     rm -rf .pytest_cache
     rm -rf **/__pycache__
+    rm -rf .mypy_cache
     rm -rf tmp/
 
     echo "✅ Complete cleaning."
