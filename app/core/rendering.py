@@ -8,7 +8,6 @@ def markdown_to_html(markdown_text: str) -> str:
 
     for line in markdown_text.splitlines():
         line = line.strip()
-        print(f"linea: {line}")
 
         # Code Blocks
         if line.startswith("```"):
@@ -58,7 +57,7 @@ def markdown_to_html(markdown_text: str) -> str:
         # Bold, italic, crossed, and code
         line = re.sub(r"(_|\*){2}(.+?)(_|\*){2}", r"<strong>\2</strong>", line)
         line = re.sub(r"(_|\*)(.+?)(_|\*)", r"<em>\2</em>", line)
-        line = re.sub(r"~~(.+?)~~", r"/<del>\1</del>", line)
+        line = re.sub(r"~~(.+?)~~", r"<del>\1</del>", line)
         line = re.sub(r"`(.+?)`", r"<code>\1</code>", line)
 
         # Images and links

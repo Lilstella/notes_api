@@ -15,9 +15,9 @@ def test_render_html():
     html = response.json()["content"]
 
     assert "<h1>Hi</h1>" in html
-    assert "<p>This a <strong>bold</strong>, <em>italic</em> and <del>crossed</del> out text</p>"
-    assert "<p><code>code in line also</code></p>"
-    assert "<h2>Lista items</h2>"
+    assert "<p>This a <strong>bold</strong>, <em>italic</em> and <del>crossed</del> out text</p>" in html
+    assert "<p><code>code in line also</code></p>" in html
+    assert "<h2>Lista items</h2>" in html
     assert "<ul>" in html and "<li>Item</li>" in html
     assert "<blockquote>This is a quote</blockquote>" in html
     assert "<hr />" in html
