@@ -47,6 +47,6 @@ echo "🔎 Running linters..."
 flake8 --config=config/.flake8 app/
 
 echo "🧪 Running tests..."
-pytest -c config/pytest.ini
+pytest -v -c config/pytest.ini
 
 echo "✅ All checks passed!"
