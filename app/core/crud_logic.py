@@ -1,7 +1,6 @@
 import os
 from fastapi import HTTPException
 from app.constants import FILES_EXTENSIONS, BASE_FOR_EXTENSION
-from app.schemas import FileRequest
 
 
 def get_file_path(file_name: str, file_type: str) -> str:
@@ -27,7 +26,7 @@ def read_file_content(file_path: str) -> str:
     except OSError as error:
         raise HTTPException(
             status_code=500,
-            detail=f"Error: {error} detected when tried to read the content of the file",
+            detail=f"Error: {error} detected when tried to read the content",
         )
 
 

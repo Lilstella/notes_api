@@ -9,6 +9,8 @@ def to_html(content: str, file_type: str) -> str:
             return csv_to_html(content)
         case "txt":
             return "<pre>" + content + "</pre>"
+        case _:
+            raise ValueError
 
 
 def markdown_to_html(markdown_text: str) -> str:
@@ -107,6 +109,8 @@ def to_markdown(content: str, file_type: str) -> str:
             return csv_to_markdown(content)
         case "txt":
             return content
+        case _:
+            raise ValueError
 
 
 def csv_to_markdown(csv_text: str) -> str:
