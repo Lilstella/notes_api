@@ -1,6 +1,16 @@
 import re
 
 
+def to_html(content: str, file_type: str) -> str:
+    match file_type:
+        case "markdown":
+            return markdown_to_html(content)
+        case "csv":
+            return csv_to_html(content)
+        case "txt":
+            return "<pre>" + content + "</pre>"
+
+
 def markdown_to_html(markdown_text: str) -> str:
     html = []
     in_list = False
@@ -74,8 +84,33 @@ def markdown_to_html(markdown_text: str) -> str:
     return "\n".join(html)
 
 
-def csv_to_markdown(csv_content: str) -> str:
-    lines = csv_content.splitlines()
+def csv_to_html(csv_text: str) -> str:
+    lines = csv_text.splitlines()
+    headers = lines[0].split(",")
+
+    html = ["<table>"]
+    html.append("<tr>" + "".join(f"<th>{header}</th>" for header in headers) + "</tr>")
+
+    for line in lines[1:]:
+        columns = line.split(",")
+        html.append("<tr>" + "".join(f"<td>{col}</td>" for col in columns) + "</tr>")
+
+    html.append("</table>")
+    return "\n".join(html)
+
+
+def to_markdown(content: str, file_type: str) -> str:
+    match file_type:
+        case "markdown":
+            return content
+        case "csv":
+            return csv_to_markdown(content)
+        case "txt":
+            return content
+
+
+def csv_to_markdown(csv_text: str) -> str:
+    lines = csv_text.splitlines()
     headers = lines[0].split(",")
 
     markdown = "| " + " | ".join(headers) + " |\n"
