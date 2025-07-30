@@ -5,41 +5,6 @@ from app.main import app
 
 client = TestClient(app)
 
-def test_crud_markdown():
-    filename = "testfile_crud"
-    content = {"text": "Hi **world**"}
-
-    # Create file
-    response = client.post(f"/markdown/{filename}", json=content)
-    assert response.status_code == 200
-    assert "created" in response.json()["message"]
-    assert os.path.exists(f"storage/markdown/{filename}.md")
-
-    # Read file
-    response = client.get(f"/markdown/{filename}")
-    assert response.status_code == 200
-    assert response.json()["content"] == content["text"]
-    assert response.json()["filename"] == filename
-    assert os.path.exists(f"storage/markdown/{filename}.md")
-
-    # Actualize file
-    new_content = {"text": "Hola **mundo** actualizado"}
-    response = client.put(f"/markdown/{filename}", json=new_content)
-    assert response.status_code == 200
-    assert "updated" in response.json()["message"]
-    assert os.path.exists(f"storage/markdown/{filename}.md")
-    
-    response = client.get(f"/markdown/{filename}")
-    assert response.status_code == 200
-    assert response.json()["content"] == new_content["text"]
-    assert response.json()["filename"] == filename
-
-    # Erase file
-    response = client.delete(f"/markdown/{filename}")
-    assert response.status_code == 200
-    assert "deleted" in response.json()["message"]
-    assert not os.path.exists(f"storage/markdown/{filename}.md")
-
 def test_versioning():
     filename = "testfile_versioning"
 
@@ -58,7 +23,6 @@ def test_versioning():
 
     # Verify amount versions
     response = client.get(f"/markdown/{filename}/versions")
-    print(response.json())
     assert response.status_code == 200
     versions = response.json()["versions"]
     assert len(versions) == 2

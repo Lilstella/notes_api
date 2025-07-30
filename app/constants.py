@@ -27,7 +27,7 @@ EXTENSION_FILES = {
 
 # Versions data bases
 VERSION_DIRS = {
-    "mardown": os.path.join(MARKDOWN_BASE_DIR, "versions"),
+    "markdown": os.path.join(MARKDOWN_BASE_DIR, "versions"),
     "csv": os.path.join(CSV_BASE_DIR, "versions"),
     "txt": os.path.join(TXT_BASE_DIR, "versions"),
 }
