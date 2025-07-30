@@ -20,11 +20,28 @@ if [[ $mode == "tempory_and_storage" ]]; then
     echo "✅ Complete cleaning."
     exit
 
+elif [[ $mode == "initial_tempory_and_storage" ]]; then
+    rm -rf **/.pytest_cache
+    rm -rf **/__pycache__
+    rm -rf .mypy_cache
+    rm -rf storage/
+
+    echo "✅ Complete cleaning."
+    exit
+
 elif [[ $mode == "tempory" ]]; then
     rm -rf **/.pytest_cache
     rm -rf **/__pycache__
     rm -rf .mypy_cache
     rm -rf tmp/
+
+    echo "✅ Complete cleaning."
+    exit
+
+elif [[ $mode == "initial_tempory" ]]; then
+    rm -rf **/.pytest_cache
+    rm -rf **/__pycache__
+    rm -rf .mypy_cache
 
     echo "✅ Complete cleaning."
     exit

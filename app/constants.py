@@ -19,6 +19,12 @@ FILES_EXTENSIONS = {
     "txt": ".txt",
 }
 
+EXTENSION_FILES = {
+    ".md": "markdown",
+    ".csv": "csv",
+    ".txt": "txt",
+}
+
 # Versions data bases
 VERSION_DIRS = {
     "mardown": os.path.join(MARKDOWN_BASE_DIR, "versions"),

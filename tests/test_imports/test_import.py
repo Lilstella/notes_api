@@ -5,7 +5,7 @@ from app.main import app
 client = TestClient(app)
 
 def test_import_invalid_extension():
-    file_path = "tests/invalid.doc"
+    file_path = "tmp/invalid.doc"
     with open(file_path, "w", encoding="utf-8") as file:
         file.write("ohara")
         
@@ -33,13 +33,16 @@ def test_import_invalid_json():
     assert response.status_code == 422
 
 def test_import_file_alredy_exists():
-    file_path = "tests/alredy_exists.md"
+    os.makedirs("storage/markdown", exist_ok=True)
+
+    file_path = "tmp/alredy_exists.md"
     destination_path = "storage/markdown/alredy_exists.md"
     with open(destination_path, "w", encoding="utf-8") as file_1, open(file_path, "w", encoding="utf-8") as file_2:
         file_1.write("original")
         file_2.write("new")
 
     response = client.post("/import", json={"file_path": file_path})
+    print(response.json())
     assert response.status_code == 409
     assert response.json()["detail"] == "File already exists"
 
