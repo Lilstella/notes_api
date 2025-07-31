@@ -34,7 +34,7 @@ def create_file(file_name: str, content: FileRequest) -> dict[str, str]:
 
     if file_exists(file_path):
         raise HTTPException(
-            status_code=400, detail=f"The file {file_name} already exists"
+            status_code=409, detail=f"The file {file_name} already exists"
         )
 
     ensure_directory_exists(BASE_FOR_EXTENSION[request_file_type])
@@ -51,13 +51,10 @@ def update_file(filename: str, content: FileRequest) -> dict[str, str]:
         save_version(filename, current.content, content.filetype)
     except OSError as error:
         raise HTTPException(status_code=500, detail=f"Error: {error}")
-    except FileNotFoundError:
+    except FileNotFoundError  or status.HTTP_404_NOT_FOUND:
         pass
 
     file_path = get_file_path(filename, content.filetype)
-
-    if not file_exists(file_path):
-        raise HTTPException(status_code=404, detail=f"The file {filename} not found")
 
     write_file_content(file_path, content.text)
 
