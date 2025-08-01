@@ -9,6 +9,12 @@ router = APIRouter()
 
 @router.get("/html/{file_name}", response_model=FileResponse)
 def render_html(file_name: str, file_type: str) -> FileResponse:
+    if file_type not in BASE_FOR_EXTENSION:
+        raise HTTPException(
+            status_code=400,
+            detail=f"The {file_type} files are not available for this function",
+        )
+
     assigned_base = BASE_FOR_EXTENSION[file_type]
     assigned_extension = FILES_EXTENSIONS[file_type]
     file_path = os.path.join(assigned_base, file_name + assigned_extension)
@@ -34,8 +40,14 @@ def render_html(file_name: str, file_type: str) -> FileResponse:
         )
 
 
-@router.post("/markdown/{file_name}", response_model=FileResponse)
+@router.get("/markdown/{file_name}", response_model=FileResponse)
 def render_markdown(file_name: str, file_type: str) -> FileResponse:
+    if file_type not in BASE_FOR_EXTENSION:
+        raise HTTPException(
+            status_code=400,
+            detail=f"The {file_type} files are not available for this function",
+        )
+
     assigned_base = BASE_FOR_EXTENSION[file_type]
     assigned_extension = FILES_EXTENSIONS[file_type]
     file_path = os.path.join(assigned_base, file_name + assigned_extension)
