@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+start=$(date +%s)
 
 USE_DEV=false
 
@@ -50,3 +51,7 @@ echo "🧪 Running tests..."
 pytest -v -c config/pytest.ini
 
 echo "✅ All checks passed!"
+
+end=$(date +%s)
+duration=$((end - start))
+echo "⏱️  Total time taken: $((duration / 60)) minute(s) and $((duration % 60)) second(s)."
