@@ -54,3 +54,6 @@ def delete_file(file_path: str) -> None:
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")
     os.remove(file_path)
+
+def correct_format(content: str, file_type: str) -> bool:
+    pass

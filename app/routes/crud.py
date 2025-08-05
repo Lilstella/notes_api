@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, status
 from app.constants import BASE_DIR, BASE_FOR_EXTENSION
 from app.schemas import FileRequest, FileResponse
 from app.core.versioning import save_version, delete_versions
-from app.core.crud_logic import (
+from app.core.file_manager import (
     get_file_path,
     read_file_content,
     write_file_content,
