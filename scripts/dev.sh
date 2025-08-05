@@ -24,7 +24,7 @@ else
 fi
 
 echo "⬆️  Upgrading pip..."
-pip install --upgrade pip
+python -m pip install --upgrade pip
 
 if $USE_DEV; then
     echo "📦 Installing development dependencies..."

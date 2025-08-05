@@ -6,13 +6,13 @@ router = APIRouter()
 
 
 @router.get("/{file_name}/versions")
-def get_markdown_versions(file_name: str, file_type: str) -> FileVersionsResponse:
+def get_file_versions(file_name: str, file_type: str) -> FileVersionsResponse:
     list_of_versions = list_versions(file_name, file_type)
     return FileVersionsResponse(filename=file_name, versions=list_of_versions)
 
 
 @router.get("/{file_name}/versions/{version}")
-def get_markdown_version(
+def get_file_version(
     file_name: str, version: str, file_type: str
 ) -> FileVersionResponse:
     try:

@@ -51,7 +51,7 @@ def update_file(filename: str, content: FileRequest) -> dict[str, str]:
         save_version(filename, current.content, content.filetype)
     except OSError as error:
         raise HTTPException(status_code=500, detail=f"Error: {error}")
-    except FileNotFoundError  or status.HTTP_404_NOT_FOUND:
+    except FileNotFoundError:
         pass
 
     file_path = get_file_path(filename, content.filetype)

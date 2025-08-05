@@ -2,7 +2,12 @@ import os
 import shutil
 from fastapi import APIRouter, HTTPException
 from app.schemas import ImportFileRequest
-from app.constants import FILES_EXTENSIONS, EXTENSION_FILES, BASE_FOR_EXTENSION, BASE_DIR
+from app.constants import (
+    FILES_EXTENSIONS,
+    EXTENSION_FILES,
+    BASE_FOR_EXTENSION,
+    BASE_DIR,
+)
 
 router = APIRouter()
 
@@ -19,8 +24,12 @@ def import_file(request: ImportFileRequest) -> dict[str, str]:
 
     if extension not in FILES_EXTENSIONS.values():
         raise HTTPException(status_code=400, detail="Invalid file extension")
-    
+
     file_type = EXTENSION_FILES.get(extension)
+
+    if file_type is None:
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+
     base_dir = BASE_FOR_EXTENSION[file_type]
     os.makedirs(base_dir, exist_ok=True)
 
