@@ -1,4 +1,5 @@
 import re
+from re import Match
 
 
 def to_html(content: str, file_type: str) -> str:
@@ -6,9 +7,13 @@ def to_html(content: str, file_type: str) -> str:
         case "markdown":
             return markdown_to_html(content)
         case "csv":
-            return csv_to_html(content)
+            return table_to_html(content, "csv")
+        case "tsv":
+            return table_to_html(content, "tsv")
         case "txt":
             return "<pre>" + content + "</pre>"
+        case "html":
+            return content
         case _:
             raise ValueError
 
@@ -86,15 +91,17 @@ def markdown_to_html(markdown_text: str) -> str:
     return "\n".join(html)
 
 
-def csv_to_html(csv_text: str) -> str:
+def table_to_html(csv_text: str, mode: str) -> str:
+    separator = "," if mode == "csv" else "\t"
     lines = csv_text.splitlines()
-    headers = lines[0].split(",")
+    headers = lines[0].split(separator)
+    print(headers)
 
     html = ["<table>"]
     html.append("<tr>" + "".join(f"<th>{header}</th>" for header in headers) + "</tr>")
 
     for line in lines[1:]:
-        columns = line.split(",")
+        columns = line.split(separator)
         html.append("<tr>" + "".join(f"<td>{col}</td>" for col in columns) + "</tr>")
 
     html.append("</table>")
@@ -106,22 +113,81 @@ def to_markdown(content: str, file_type: str) -> str:
         case "markdown":
             return content
         case "csv":
-            return csv_to_markdown(content)
+            return table_to_markdown(content, "csv")
+        case "tsv":
+            return table_to_markdown(content, "tsv")
         case "txt":
             return content
+        case "html":
+            return html_to_markdown(content)
         case _:
             raise ValueError
 
 
-def csv_to_markdown(csv_text: str) -> str:
+def table_to_markdown(csv_text: str, mode: str) -> str:
+    separator = "," if mode == "csv" else "\t"
     lines = csv_text.splitlines()
-    headers = lines[0].split(",")
+    headers = lines[0].split(separator)
 
     markdown = "| " + " | ".join(headers) + " |\n"
     markdown += "| " + " | ".join(["---"] * len(headers)) + " |\n"
 
     for line in lines[1:]:
-        columns = line.split(",")
+        columns = line.split(separator)
         markdown += "| " + " | ".join(columns) + " |\n"
 
     return markdown
+
+
+def html_to_markdown(html_text: str) -> str:
+    markdown = html_text
+
+    # Code blocks
+    markdown = re.sub(
+        r"<pre><code>(.*?)</code></pre>", r"```\n\1\n```", markdown, flags=re.DOTALL
+    )
+
+    # Headers
+    for i in range(6, 0, -1):
+        markdown = re.sub(
+            rf"<h{i}>(.*?)</h{i}>",
+            lambda m: "#" * i + " " + m.group(1).strip(),
+            markdown,
+        )
+
+    # Quotes
+    markdown = re.sub(
+        r"<blockquote>(.*?)</blockquote>", lambda m: "> " + m.group(1).strip(), markdown
+    )
+
+    # Separators
+    markdown = re.sub(r"<hr\s*/?>", "---", markdown)
+
+    # Lists
+    def replace_list(match: Match[str]) -> str:
+        items = re.findall(r"<li>(.*?)</li>", match.group(1), flags=re.DOTALL)
+        return "\n".join(f"- {item.strip()}" for item in items)
+
+    markdown = re.sub(r"<ul>(.*?)</ul>", replace_list, markdown, flags=re.DOTALL)
+
+    # Bold and italic
+    markdown = re.sub(r"<strong>(.*?)</strong>", r"**\1**", markdown)
+    markdown = re.sub(r"<em>(.*?)</em>", r"*\1*", markdown)
+    markdown = re.sub(r"<del>(.*?)</del>", r"~~\1~~", markdown)
+
+    # Inline code
+    markdown = re.sub(r"<code>(.*?)</code>", r"`\1`", markdown)
+
+    # Images
+    markdown = re.sub(r'<img\s+src="(.*?)"\s+alt="(.*?)"\s*/?>', r"![\2](\1)", markdown)
+
+    # Links
+    markdown = re.sub(r'<a\s+href="(.*?)">(.*?)</a>', r"[\2](\1)", markdown)
+
+    # Paragraphs to newlines
+    markdown = re.sub(r"<p>(.*?)</p>", r"\1\n", markdown)
+
+    markdown = re.sub(r"</?[^>]+>", "", markdown)
+    markdown = re.sub(r"\n{3,}", "\n\n", markdown)
+
+    return markdown.strip()
