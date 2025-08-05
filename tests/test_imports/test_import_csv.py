@@ -19,12 +19,12 @@ def test_import_csv():
     assert response.json()["destination_path"] == expected_path
     assert response.json()["file_name"] == "test.csv"
     assert os.path.exists(file_path)
-
+    
     with open(response.json()["destination_path"], "r", encoding="utf-8") as file:
         content_destination = file.read()
     assert content == content_destination
     
-    client.request(method="DELETE", url="/file/test", json={"file_name": "test", "file_type": "csv"})
+    client.request(method="DELETE", url="/file/delete/test", params={"file_type": "csv"})
     os.remove(file_path)
 
 def test_import_non_existent_markdown():

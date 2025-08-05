@@ -24,7 +24,7 @@ def test_import_markdown():
         content_destination = file.read()
     assert content == content_destination
     
-    client.request(method="DELETE", url="/file/test", json={"file_name": "test", "file_type": "markdown"})
+    client.request(method="DELETE", url="/file/delete/test", params={"file_type": "markdown"})
     os.remove(file_path)
 
 def test_import_non_existent_markdown():
