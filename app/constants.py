@@ -7,6 +7,7 @@ CSV_BASE_DIR = os.path.join(BASE_DIR, "csv")
 TXT_BASE_DIR = os.path.join(BASE_DIR, "txt")
 HTML_BASE_DIR = os.path.join(BASE_DIR, "html")
 TSV_BASE_DIR = os.path.join(BASE_DIR, "tsv")
+TEX_BASE_DIR = os.path.join(BASE_DIR, "latex")
 
 # Files
 BASE_FOR_EXTENSION = {
@@ -15,6 +16,7 @@ BASE_FOR_EXTENSION = {
     "txt": TXT_BASE_DIR,
     "html": HTML_BASE_DIR,
     "tsv": TSV_BASE_DIR,
+    "latex": TEX_BASE_DIR,
 }
 
 FILES_EXTENSIONS = {
@@ -23,6 +25,7 @@ FILES_EXTENSIONS = {
     "txt": ".txt",
     "html": ".html",
     "tsv": ".tsv",
+    "latex": ".tex",
 }
 
 EXTENSION_FILES = {
@@ -31,6 +34,7 @@ EXTENSION_FILES = {
     ".txt": "txt",
     ".html": "html",
     ".tsv": "tsv",
+    ".tex": "latex",
 }
 
 # Versions data bases
@@ -40,4 +44,5 @@ VERSION_DIRS = {
     "txt": os.path.join(TXT_BASE_DIR, "versions"),
     "html": os.path.join(HTML_BASE_DIR, "versions"),
     "tsv": os.path.join(TSV_BASE_DIR, "versions"),
+    "latex": os.path.join(TEX_BASE_DIR, "versions"),
 }

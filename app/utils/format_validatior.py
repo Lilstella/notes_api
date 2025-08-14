@@ -1,4 +1,5 @@
-import re
+# import re
+
 
 def correct_format(content: str, file_type: str) -> bool:
     match file_type:
@@ -14,18 +15,23 @@ def correct_format(content: str, file_type: str) -> bool:
             return format_html(content)
         case _:
             raise ValueError
-        
+
+
 def format_markdown(content: str) -> bool:
-    pass
+    return True
+
 
 def format_csv(content: str) -> bool:
-    pass
+    return True
+
 
 def format_tsv(content: str) -> bool:
-    pass
+    return True
+
 
 def format_txt(content: str) -> bool:
-    pass
+    return True
+
 
 def format_html(content: str) -> bool:
-    pass 
+    return True
