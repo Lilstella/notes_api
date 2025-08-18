@@ -116,6 +116,8 @@ def to_markdown(content: str, file_type: str) -> str:
             return table_to_markdown(content, "csv")
         case "tsv":
             return table_to_markdown(content, "tsv")
+        case "latex":
+            return latex_to_markdown(content)
         case "txt":
             return content
         case "html":
@@ -191,3 +193,51 @@ def html_to_markdown(html_text: str) -> str:
     markdown = re.sub(r"\n{3,}", "\n\n", markdown)
 
     return markdown.strip()
+
+
+def latex_to_markdown(latex_text: str) -> str:
+    text = latex_text
+
+    # Remove preamble
+    text = re.sub(r".*?\\begin\{document\}", "", text, flags=re.S)
+    text = re.sub(r"\\end\{document\}.*", "", text, flags=re.S)
+
+    # Sections
+    text = re.sub(r"\\section\{(.+?)\}", r"# \1", text)
+    text = re.sub(r"\\subsection\{(.+?)\}", r"## \1", text)
+    text = re.sub(r"\\subsubsection\{(.+?)\}", r"### \1", text)
+
+    # Text formatting
+    text = re.sub(r"\\textbf\{(.+?)\}", r"**\1**", text)
+    text = re.sub(r"\\textit\{(.+?)\}", r"*\1*", text)
+    text = re.sub(r"\\emph\{(.+?)\}", r"*\1*", text)
+    text = re.sub(r"\\sout\{(.+?)\}", r"~~\1~~", text)  # strikethrough
+    text = re.sub(r"\\texttt\{(.+?)\}", r"`\1`", text)  # inline code
+
+    # Itemize -> bullet list
+    text = re.sub(r"\\begin\{itemize\}", "", text)
+    text = re.sub(r"\\end\{itemize\}", "", text)
+    text = re.sub(r"\\item\s+", r"- ", text)
+
+    # Enumerate -> numbered list
+    text = re.sub(r"\\begin\{enumerate\}", "", text)
+    text = re.sub(r"\\end\{enumerate\}", "", text)
+    text = re.sub(r"\\item\s+", r"1. ", text)
+
+    # Quote environment
+    text = re.sub(r"\\begin\{quote\}", "\n> ", text)
+    text = re.sub(r"\\end\{quote\}", "", text)
+
+    # Horizontal rule
+    text = text.replace(r"\hrule", "\n\n---\n\n")
+
+    # Block math \[...\] -> $$...$$
+    text = re.sub(r"\\\[(.+?)\\\]", r"$$\1$$", text, flags=re.S)
+
+    # Clean up leftover commands (ignore \sout etc. already handled)
+    text = re.sub(r"\\[a-zA-Z]+\s*", "", text)
+
+    # Clean multiple newlines
+    text = re.sub(r"\n\s*\n", "\n\n", text)
+
+    return text.strip()

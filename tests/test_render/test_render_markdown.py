@@ -107,3 +107,24 @@ def test_render_html_to_markdown():
     assert "> This is a quote" in markdown_content
     assert "---" in markdown_content
     client.request(method="DELETE", url=f"/file/delete/{file_name}", params={"file_type": "html"})
+
+def test_render_latex_to_markdown():
+    file_name = "test_render_latex_to_markdown"
+    content = {"text": r"\section{Hi}\textbf{This a bold}, \textit{italic} and \sout{crossed} out text\texttt{code in line also}\subsection{Lista items}\begin{itemize}\item Item\end{itemize}\begin{quote}This is a quote\end{quote}\hrule",
+               "filetype": "latex"}
+    
+    client.post(f"/file/create/{file_name}", json=content)
+    response = client.request(method="GET", url=f"/render/markdown/{file_name}", params={"file_type": "latex"})
+
+    assert response.status_code == 200
+
+    markdown_content = response.json()["content"]
+    assert "# Hi" in markdown_content
+    assert "**This a bold**, *italic* and ~~crossed~~ out text" in markdown_content
+    assert "`code in line also`" in markdown_content
+    assert "## Lista items" in markdown_content
+    assert "- Item" in markdown_content
+    assert "> This is a quote" in markdown_content
+    assert "---" in markdown_content
+
+    client.request(method="DELETE", url=f"/file/delete/{file_name}", params={"file_type": "latex"})
